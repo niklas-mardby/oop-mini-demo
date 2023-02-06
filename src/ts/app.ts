@@ -57,29 +57,64 @@ class MyView {
         // this.section.append(p);
         // kör med create om du ska ha klasser, lyssnare mm på ditt element
     }
+    resetCards() {
+        this.section.innerHTML = "";
+    }
 }
 
 class MyModel {
     // model = data, API
+    private url = "https://swapi.dev/api/people/?search=";
 
     // egenskaper kan vara url, json-svar
-
     // metoder kan vara fetch (trolla med json-svar)
+    async searchPeople(s: string) {
+        const response = await fetch(this.url + s);
+        const data = await response.json();
+        return data;
+    }
 }
 
 // vi kan lägga control i koden i global istf ett geget objekt (förenkling)
-class MyControl {
-    // control = styrning mot model och view
+// class MyControl {
+// control = styrning mot model och view
 
-    // egenskaper
+// egenskaper
 
-    // metoder kan vara mellanhanden mellan view och model,
-    // exvis säga till model att göra fetch, ta emot json, skicka ngt till view
-    // trolla med json-svar
-}
+// metoder kan vara mellanhanden mellan view och model,
+// exvis säga till model att göra fetch, ta emot json, skicka ngt till view
+// trolla med json-svar
+// }
 
 const myView = new MyView();
-myView.addCard("kebab");
-myView.addCard("pizza");
-myView.addCard("pasta");
+const myModel = new MyModel();
+
+// myView.addCard("kebab");
+// myView.addCard("pizza");
+// myView.addCard("pasta");
+
+
+// Controller
+const inputElement = document.querySelector("input") as HTMLInputElement;
+const buttonElement = document.querySelector("button") as HTMLButtonElement;
+// button = myView.getSearchButton();
+
+buttonElement.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    if (inputElement.value.length > 0) {
+        myView.resetCards();
+
+        myModel.searchPeople(inputElement.value).then(data => {
+            data.results.forEach((person: any) => {
+                myView.addCard(person.name);
+            });
+
+        });
+    }
+});
+
+// hur kan det se ut om vi gör ett control-objekt??
+
+// const myController = new MyControl(myView, myModel);
 
