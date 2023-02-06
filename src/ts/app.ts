@@ -97,7 +97,7 @@ const myModel = new MyModel();
 // Controller
 const inputElement = document.querySelector("input") as HTMLInputElement;
 const buttonElement = document.querySelector("button") as HTMLButtonElement;
-// button = myView.getSearchButton();
+// button = this.myView.getSearchButton();
 
 buttonElement.addEventListener("click", (event) => {
     event.preventDefault();
